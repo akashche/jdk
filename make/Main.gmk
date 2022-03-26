@@ -789,6 +789,12 @@ $(eval $(call SetupTarget, install, \
     DEPS := product-images, \
 ))
 
+$(eval $(call SetupTarget, installer-msi, \
+    MAKEFILE := Install, \
+    TARGET := installer-msi, \
+    DEPS := product-images, \
+))
+
 ################################################################################
 #
 # Dependency declarations between targets.

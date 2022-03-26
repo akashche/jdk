@@ -131,6 +131,9 @@ TOOL_PUBLICSUFFIXLIST = $(JAVA_SMALL) -cp $(BUILDTOOLS_OUTPUTDIR)/jdk_tools_clas
 TOOL_FIXUPPANDOC = $(JAVA_SMALL) -cp $(BUILDTOOLS_OUTPUTDIR)/jdk_tools_classes \
     build.tools.fixuppandoc.Main
 
+TOOL_INSTALLERMSI_SET_VERSION = $(JAVA_SMALL) -cp $(BUILDTOOLS_OUTPUTDIR)/jdk_tools_classes \
+    build.tools.installermsi.SetVersion
+
 ##########################################################################################
 
 # Executable javascript filter for man page generation using pandoc.

@@ -26,6 +26,8 @@
 default: install
 
 include $(SPEC)
+include MakeBase.gmk
+include ToolsJdk.gmk
 
 BINARIES := $(notdir $(wildcard $(JDK_IMAGE_DIR)/bin/*))
 INSTALLDIR := openjdk-$(VERSION_SHORT)
@@ -41,3 +43,23 @@ install:
 	$(MKDIR) -p $(INSTALL_PREFIX)/bin
 	$(RM) $(addprefix $(INSTALL_PREFIX)/bin/, $(BINARIES))
 	$(foreach b, $(BINARIES), $(LN) -s $(INSTALL_PREFIX)/jvm/$(INSTALLDIR)/bin/$b $(INSTALL_PREFIX)/bin/$b &&) true
+
+# Create MSI installer from jdk image
+installer-msi:
+	echo Creating MSI installer in $(INSTALLERMSI_IMAGE_DIR)
+	$(RM) -r $(INSTALLERMSI_IMAGE_DIR)
+	$(MKDIR) -p $(INSTALLERMSI_IMAGE_DIR)/resources
+	$(CP) -rp $(TOPDIR)/make/data/installermsi/resources/* \
+	    $(INSTALLERMSI_IMAGE_DIR)/resources
+	$(TOOL_INSTALLERMSI_SET_VERSION) \
+	    $(TOPDIR)/make/data/installermsi/jdk.xml \
+	    $(INSTALLERMSI_IMAGE_DIR)/jdk.wxs \
+	    $(VERSION_FEATURE) \
+	    $(VERSION_NUMBER) \
+	    $(VERSION_NUMBER_FOUR_POSITIONS)
+	cd $(INSTALLERMSI_IMAGE_DIR) && $(INSTALLERMSI_WIX_CANDLE) \
+	    -nologo -arch x64 jdk.wxs
+	cd $(INSTALLERMSI_IMAGE_DIR) && $(INSTALLERMSI_WIX_LIGHT) \
+	    -nologo -sw1076 -ext WixUIExtension -ext WixUtilExtension jdk.wixobj
+
+.PHONY: default installer-msi
