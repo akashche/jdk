@@ -279,7 +279,7 @@ final public class TKit {
 
     private final static String TEMP_FILE_PREFIX = null;
 
-    private static Path createUniqueFileName(String defaultName) {
+    public static Path createUniqueFileName(String defaultName) {
         final String[] nameComponents;
 
         int separatorIdx = defaultName.lastIndexOf('.');
